@@ -10,9 +10,20 @@
     @Html.ActionLink("Remove Trainee", "RemoveTrainee", "Courses", new { @class = "btn btn-danger" })
 </div>
 
+@using (Html.BeginForm("Index", "Courses", FormMethod.Get))
+{
+    <div class="form-group">
+        @Html.TextBox("SearchCourse", null, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+}
+
 <table class="table">
     <thead class="thead-dark">
         <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Category</th>
             <th scope="col">Trainee</th>
         </tr>
     </thead>
@@ -20,6 +31,9 @@
         @foreach (var item in @Model)
         {
             <tr>
+                <td>@item.Course.Name</td>
+                <td>@item.Course.Description</td>
+                <td>@item.Course.Category.Name</td>
                 <td>
                     <ul>
                         @foreach (var trainee in item.Trainees)

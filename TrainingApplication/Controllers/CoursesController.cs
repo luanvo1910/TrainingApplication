@@ -47,15 +47,27 @@ namespace TrainingApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetTrainees(int id)
+        public ActionResult GetTrainees(string SearchCourse)
         {
             var courses = _context.Courses
                 .Include(t => t.Category)
                 .ToList();
             var trainee = _context.TraineesCourses.ToList();
 
-            var viewModel = _context.TraineesCourses
-                .SingleOrDefault(t => t.CourseId == id);
+            List<CoursesTraineesViewModel> viewModel = _context.TraineesCourses
+                .GroupBy(i => i.Course)
+                .Select(res => new CoursesTraineesViewModel
+                {
+                    Course = res.Key,
+                    Trainees = res.Select(u => u.Trainee).ToList()
+                })
+                .ToList();
+            if (!string.IsNullOrEmpty(SearchCourse))
+            {
+                viewModel = viewModel
+                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
+                    ToList();
+            }
             return View(viewModel);
         }
 
@@ -175,7 +187,7 @@ namespace TrainingApplication.Controllers
             _context.TraineesCourses.Add(model);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Courses");
+            return RedirectToAction("GetTrainees", "Courses");
         }
 
         [HttpGet]
@@ -208,7 +220,7 @@ namespace TrainingApplication.Controllers
             _context.TraineesCourses.Remove(userTeam);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Courses");
+            return RedirectToAction("GetTrainees", "Courses");
         }
 
         [HttpGet]
