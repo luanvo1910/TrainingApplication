@@ -63,11 +63,14 @@ namespace TrainingApplication.Controllers
             var course = _context.Courses.ToList();
             var trainee = _context.Trainees.ToList();
             var userId = User.Identity.GetUserId();
+
             var trainerCourses = _context.TrainersCourses
                 .Where(t => t.Trainer.TrainerId == userId)
                 .Select(t => t.CourseId)
                 .ToList();
-            var traineeCourses = _context.TraineesCourses.ToList() ;
+
+            List<TraineesCourse> traineeCourses = new List<TraineesCourse>();
+
             foreach (var courseId in trainerCourses)
             {
                 var trainees = _context.TraineesCourses
@@ -75,6 +78,7 @@ namespace TrainingApplication.Controllers
                 .ToList();
                 traineeCourses.AddRange(trainees);
             }
+
             return View(traineeCourses);
         }
     }
