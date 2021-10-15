@@ -1,0 +1,20 @@
+﻿@model TrainingApplication.Models.Trainer
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>My Profile</h2>
+
+@Html.ActionLink("Edit", "Edit", "Trainers", new { id = @Model.Id }, new { @class = "btn btn-success" })
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        @Model.Name
+    </div>
+    <div class="panel-body">
+        <p>Age: @Model.Age</p>
+        <p>Specialty: @Model.Specialty</p>
+        <p>Address: @Model.Address</p>
+    </div>
+</div>

@@ -221,13 +221,13 @@ namespace TrainingApplication.Controllers
         [HttpGet]
         public ActionResult EditTrainer(int id)
         {
-            var staffInDb = _context.Trainers
+            var trainerInDb = _context.Trainers
                 .SingleOrDefault(t => t.Id == id);
-            if (staffInDb == null)
+            if (trainerInDb == null)
             {
                 return HttpNotFound();
             }
-            return View(staffInDb);
+            return View(trainerInDb);
         }
 
         [HttpPost]
