@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TrainingApplication.ViewModels.CoursesTrainerViewModel>
+﻿@model IEnumerable<TrainingApplication.Models.Course>
 @{
     ViewBag.Title = "Index";
 }
@@ -7,11 +7,6 @@
 
 <div class="form-group">
     @Html.ActionLink("Create a new Course", "Create", "Courses", new { @class = "btn btn-primary" })
-</div>
-
-<div>
-    @Html.ActionLink("Assign Trainer", "AddTrainer", "Courses", new { @class = "btn btn-success" })
-    @Html.ActionLink("Remove Trainer", "RemoveTrainer", "Courses", new { @class = "btn btn-danger" })
 </div>
 
 <div></div>
@@ -30,27 +25,18 @@
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">Category</th>
-            <th scope="col">Trainers</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in @Model)
         {
             <tr>
-                <td>@item.Course.Name</td>
-                <td>@item.Course.Description</td>
-                <td>@item.Course.Category.Name</td>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Category.Name</td>
                 <td>
-                    <ul>
-                        @foreach (var trainer in item.Trainers)
-                        {
-                            <li>@trainer.Email</li>
-                        }
-                    </ul>
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", "Courses", new { id = item.Course.Id }, new { @class = "btn btn-success" })
-                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = item.Course.Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Edit", "Edit", "Courses", new { id = item.Id }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Delete", "Delete", "Courses", new { id = item.Id }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }

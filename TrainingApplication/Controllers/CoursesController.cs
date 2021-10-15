@@ -26,6 +26,22 @@ namespace TrainingApplication.Controllers
             var courses = _context.Courses
                 .Include(t => t.Category)
                 .ToList();
+
+            if (!string.IsNullOrEmpty(SearchCourse))
+            {
+                courses = courses
+                    .Where(t => t.Name.ToLower().Contains(SearchCourse.ToLower())).
+                    ToList();
+            }
+            return View(courses);
+        }
+
+        [HttpGet]
+        public ActionResult GetTrainers(string SearchCourse)
+        {
+            var courses = _context.Courses
+                .Include(t => t.Category)
+                .ToList();
             var trainer = _context.TrainersCourses.ToList();
 
             List<CoursesTrainerViewModel> viewModel = _context.TrainersCourses
@@ -36,7 +52,6 @@ namespace TrainingApplication.Controllers
                     Trainers = res.Select(u => u.Trainer).ToList()
                 })
                 .ToList();
-
             if (!string.IsNullOrEmpty(SearchCourse))
             {
                 viewModel = viewModel

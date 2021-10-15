@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TrainingApplication.ViewModels;
-
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TrainingApplication.Controllers
 {
@@ -38,7 +38,6 @@ namespace TrainingApplication.Controllers
                 _userManager = value;
             }
         }
-
 
         // GET: Admin
         public ActionResult Index()
@@ -244,6 +243,46 @@ namespace TrainingApplication.Controllers
             trainerInDb.Address = trainer.Address;
             trainerInDb.Specialty = trainer.Specialty;
 
+            _context.SaveChanges();
+            return RedirectToAction("GetTrainers", "Admin");
+        }
+
+        public ActionResult StaffPasswordReset(string id)
+        {
+            var staffInDb = _context.Users.SingleOrDefault(i => i.Id == id);
+            if (staffInDb == null)
+            {
+                return HttpNotFound();
+            }
+            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            userId = staffInDb.Id;
+            if (userId != null)
+            {
+                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+                userManager.RemovePassword(userId);
+                string newPassword = "Abc_123";
+                userManager.AddPassword(userId, newPassword);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("GetStaffs", "Admin");
+        }
+
+        public ActionResult TrainerPasswordReset(string id)
+        {
+            var trainerInDb = _context.Users.SingleOrDefault(i => i.Id == id);
+            if (trainerInDb == null)
+            {
+                return HttpNotFound();
+            }
+            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            userId = trainerInDb.Id;
+            if (userId != null)
+            {
+                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+                userManager.RemovePassword(userId);
+                string newPassword = "Abc_123";
+                userManager.AddPassword(userId, newPassword);
+            }
             _context.SaveChanges();
             return RedirectToAction("GetTrainers", "Admin");
         }
