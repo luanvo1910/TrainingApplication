@@ -11,6 +11,7 @@ using TrainingApplication.ViewModels;
 
 namespace TrainingApplication.Controllers
 {
+    [Authorize(Roles = Role.Staff)]
     public class CoursesController : Controller
     {
         private ApplicationDbContext _context;
@@ -24,26 +25,47 @@ namespace TrainingApplication.Controllers
         {
             var courses = _context.Courses
                 .Include(t => t.Category)
-                .Include(t => t.Trainer)
                 .ToList();
+            var trainer = _context.TrainersCourses.ToList();
+
+            List<CoursesTrainerViewModel> viewModel = _context.TrainersCourses
+                .GroupBy(i => i.Course)
+                .Select(res => new CoursesTrainerViewModel
+                {
+                    Course = res.Key,
+                    Trainers = res.Select(u => u.Trainer).ToList()
+                })
+                .ToList();
+
             if (!string.IsNullOrEmpty(SearchCourse))
             {
-                courses = courses
-                    .Where(t => t.Name.ToLower().Contains(SearchCourse.ToLower())).
+                viewModel = viewModel
+                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
                     ToList();
             }
-            return View(courses);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public ActionResult GetTrainees(int id)
+        {
+            var courses = _context.Courses
+                .Include(t => t.Category)
+                .ToList();
+            var trainee = _context.TraineesCourses.ToList();
+
+            var viewModel = _context.TraineesCourses
+                .SingleOrDefault(t => t.CourseId == id);
+            return View(viewModel);
         }
 
         [HttpGet]
         public ActionResult Create()
         {
             var categories = _context.Categories.ToList();
-            var trainers = _context.Trainers.ToList();
             var viewModel = new CoursesViewModel()
             {
                 Categories = categories,
-                Trainers = trainers
             };
             return View(viewModel);
         }
@@ -55,26 +77,18 @@ namespace TrainingApplication.Controllers
                 var viewModel = new CoursesViewModel
                 {
                     Course = model.Course,
-                    Categories = _context.Categories.ToList(),
-                    Trainers = _context.Trainers.ToList()
+                    Categories = _context.Categories.ToList()
                 };
                 return View(viewModel);
             }
 
-            var courseTrainer = new CoursesTrainer()
-            {
-                CourseId = model.Course.Id,
-                TrainerId = model.Course.TrainerId
-            };
             var newCourse = new Course()
             {
                 Name = model.Course.Name,
                 Description = model.Course.Description,
                 CategoryId = model.Course.CategoryId,
-                TrainerId = model.Course.TrainerId
             };
             _context.Courses.Add(newCourse);
-            _context.CoursesTrainer.Add(courseTrainer);
             _context.SaveChanges();
             return RedirectToAction("Index", "Courses");
         }
@@ -84,14 +98,17 @@ namespace TrainingApplication.Controllers
         {
             var CourseInDb = _context.Courses
                 .SingleOrDefault(t => t.Id == id);
-            var CoursesTrainerInDb = _context.CoursesTrainer
+            var CoursesTraineeInDb = _context.TraineesCourses
+                .SingleOrDefault(t => t.CourseId == id);
+            var CoursesTrainerInDb = _context.TrainersCourses
                 .SingleOrDefault(t => t.CourseId == id);
             if (CourseInDb == null)
             {
                 return HttpNotFound();
             }
+            _context.TrainersCourses.Remove(CoursesTrainerInDb);
+            _context.TraineesCourses.Remove(CoursesTraineeInDb);
             _context.Courses.Remove(CourseInDb);
-            _context.CoursesTrainer.Remove(CoursesTrainerInDb);
             _context.SaveChanges();
             return RedirectToAction("Index", "Courses");
         }
@@ -108,8 +125,7 @@ namespace TrainingApplication.Controllers
             var viewModel = new CoursesViewModel
             {
                 Course = CourseInDb,
-                Categories = _context.Categories.ToList(),
-                Trainers = _context.Trainers.ToList()
+                Categories = _context.Categories.ToList()
             };
             return View(viewModel);
         }
@@ -121,8 +137,7 @@ namespace TrainingApplication.Controllers
                 var viewModel = new CoursesViewModel
                 {
                     Course = model.Course,
-                    Categories = _context.Categories.ToList(),
-                    Trainers = _context.Trainers.ToList()
+                    Categories = _context.Categories.ToList()
                 };
                 return View(viewModel);
             }
@@ -135,12 +150,121 @@ namespace TrainingApplication.Controllers
             CourseInDb.Name = model.Course.Name;
             CourseInDb.Description = model.Course.Description;
             CourseInDb.CategoryId = model.Course.CategoryId;
-            CourseInDb.TrainerId = model.Course.TrainerId;
-
-            var CoursesTrainerInDb = _context.CoursesTrainer
-                .SingleOrDefault(t => t.CourseId == model.Course.Id);
-            CoursesTrainerInDb.TrainerId = model.Course.TrainerId;
             _context.SaveChanges();
+            return RedirectToAction("Index", "Courses");
+        }
+
+        [HttpGet]
+        public ActionResult AddTrainee()
+        {
+            var viewModel = new TraineesCourseViewModel
+            {
+                Courses = _context.Courses.ToList(),
+                Trainees = _context.Trainees.ToList()
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult AddTrainee(TraineesCourseViewModel viewModel)
+        {
+            var model = new TraineesCourse
+            {
+                CourseId = viewModel.CourseId,
+                TraineeId = viewModel.TraineeId
+            };
+            _context.TraineesCourses.Add(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Courses");
+        }
+
+        [HttpGet]
+        public ActionResult RemoveTrainee()
+        {
+            var trainees = _context.TraineesCourses.Select(t => t.Trainee)
+                .Distinct()
+                .ToList();
+            var courses = _context.TraineesCourses.Select(t => t.Course)
+                .Distinct()
+                .ToList();
+
+            var viewModel = new TraineesCourseViewModel
+            {
+                Courses = courses,
+                Trainees = trainees
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult RemoveTrainee(TraineesCourseViewModel viewModel)
+        {
+            var userTeam = _context.TraineesCourses
+                .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TraineeId == viewModel.TraineeId);
+            if (userTeam == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.TraineesCourses.Remove(userTeam);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Courses");
+        }
+
+        [HttpGet]
+        public ActionResult AddTrainer()
+        {
+            var viewModel = new TrainersCourseViewModel
+            {
+                Courses = _context.Courses.ToList(),
+                Trainers = _context.Trainers.ToList()
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult AddTrainer(TrainersCourseViewModel viewModel)
+        {
+            var model = new TrainersCourse
+            {
+                CourseId = viewModel.CourseId,
+                TrainerId = viewModel.TrainerId
+            };
+            _context.TrainersCourses.Add(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Courses");
+        }
+
+        [HttpGet]
+        public ActionResult RemoveTrainer()
+        {
+            var trainers = _context.TrainersCourses.Select(t => t.Trainer)
+                .Distinct()
+                .ToList();
+            var courses = _context.TrainersCourses.Select(t => t.Course)
+                .Distinct()
+                .ToList();
+
+            var viewModel = new TrainersCourseViewModel
+            {
+                Courses = courses,
+                Trainers = trainers
+            };
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult RemoveTrainer(TrainersCourseViewModel viewModel)
+        {
+            var userTeam = _context.TrainersCourses
+                .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TrainerId == viewModel.TrainerId);
+            if (userTeam == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.TrainersCourses.Remove(userTeam);
+            _context.SaveChanges();
+
             return RedirectToAction("Index", "Courses");
         }
 

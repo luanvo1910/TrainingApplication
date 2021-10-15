@@ -179,9 +179,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202110142042487_FixDatabase.cs" />
-    <Compile Include="Migrations\202110142042487_FixDatabase.Designer.cs">
-      <DependentUpon>202110142042487_FixDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\202110151218500_UpdateApp.cs" />
+    <Compile Include="Migrations\202110151218500_UpdateApp.Designer.cs">
+      <DependentUpon>202110151218500_UpdateApp.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -189,19 +189,23 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Course.cs" />
-    <Compile Include="Models\CoursesTrainer.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Staff.cs" />
     <Compile Include="Models\Trainee.cs" />
+    <Compile Include="Models\TraineesCourse.cs" />
     <Compile Include="Models\Trainer.cs" />
+    <Compile Include="Models\TrainersCourse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Role.cs" />
+    <Compile Include="ViewModels\CoursesTraineesViewModel.cs" />
+    <Compile Include="ViewModels\CoursesTrainerViewModel.cs" />
     <Compile Include="ViewModels\CoursesViewModel.cs" />
-    <Compile Include="ViewModels\CoursesUserViewModel.cs" />
     <Compile Include="ViewModels\CreateStaffViewModel.cs" />
     <Compile Include="ViewModels\CreateTraineeViewModel.cs" />
     <Compile Include="ViewModels\CreateTrainerViewModel.cs" />
+    <Compile Include="ViewModels\TraineesCourseViewModel.cs" />
+    <Compile Include="ViewModels\TrainersCourseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -274,6 +278,11 @@
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
+    <Content Include="Views\Courses\AddTrainee.cshtml" />
+    <Content Include="Views\Courses\RemoveTrainee.cshtml" />
+    <Content Include="Views\Courses\AddTrainer.cshtml" />
+    <Content Include="Views\Courses\RemoveTrainer.cshtml" />
+    <Content Include="Views\Courses\GetTrainees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -295,8 +304,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202110142042487_FixDatabase.resx">
-      <DependentUpon>202110142042487_FixDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110151218500_UpdateApp.resx">
+      <DependentUpon>202110151218500_UpdateApp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

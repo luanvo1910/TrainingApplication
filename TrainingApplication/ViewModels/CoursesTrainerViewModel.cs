@@ -6,9 +6,9 @@ using TrainingApplication.Models;
 
 namespace TrainingApplication.ViewModels
 {
-    public class CoursesViewModel
+    public class CoursesTrainerViewModel
     {
         public Course Course { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<Trainer> Trainers { get; set; }
     }
 }

@@ -20,9 +20,5 @@ namespace TrainingApplication.Models
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-        [ForeignKey("Trainer")]
-        public int TrainerId { get; set; }
-        public Trainer Trainer { get; set; }
     }
 }

@@ -25,7 +25,9 @@ namespace TrainingApplication.Models
 
         public DbSet<Course> Courses { get; set; }
 
-        public DbSet<CoursesTrainer> CoursesTrainer { get; set; }
+        public DbSet<TraineesCourse> TraineesCourses { get; set; }
+
+        public DbSet<TrainersCourse> TrainersCourses { get; set; }
 
         public static ApplicationDbContext Create()
         {

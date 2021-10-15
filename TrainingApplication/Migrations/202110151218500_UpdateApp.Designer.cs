@@ -7,13 +7,13 @@ namespace TrainingApplication.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class FixDatabase : IMigrationMetadata
+    public sealed partial class UpdateApp : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(FixDatabase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateApp));
         
         string IMigrationMetadata.Id
         {
-            get { return "202110142042487_FixDatabase"; }
+            get { return "202110151218500_UpdateApp"; }
         }
         
         string IMigrationMetadata.Source
