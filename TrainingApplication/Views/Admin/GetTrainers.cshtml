@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TrainingApplication.Models.Trainer>
+@{
+    ViewBag.Title = "GetTrainers";
+}
+
+<h2>List Trainers</h2>
+
+<div class="form-group">
+    @Html.ActionLink("Create a new Trainer", "CreateTrainer", "Admin", new { @class = "btn btn-primary" })
+</div>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Address</th>
+            <th scope="col">Specialty</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>@item.Email</td>
+            <td>@item.Name</td>
+            <td>@item.Age</td>
+            <td>@item.Address</td>
+            <td>@item.Specialty</td>
+            <td>@Html.ActionLink("Delete", "DeleteTrainer", "Admin", new { id = @item.Id }, new { @class = "btn btn-danger" })</td>
+            <td>@Html.ActionLink("Edit", "EditTrainer", "Admin", new { id = @item.Id }, new { @class = "btn btn-primary" })</td>
+        </tr>
+        }
+            </tr>
+        </tbody>
+    </table>

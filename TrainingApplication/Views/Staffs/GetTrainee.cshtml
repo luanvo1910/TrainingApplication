@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TrainingApplication.Models.Trainee>
+@{
+    ViewBag.Title = "GetTrainee";
+}
+
+<h2>List of Trainees</h2>
+
+<div class="form-group">
+    @Html.ActionLink("Create a new Trainee", "CreateTrainee", "Staffs", new { @class = "btn btn-primary" })
+</div>
+
+@using (Html.BeginForm("GetTrainee", "Staffs", FormMethod.Get))
+{
+    <div class="form-group">
+        @Html.TextBox("SearchName", null, new {@class = "form-control"})
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Address</th>
+            <th scope="col">Education</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Email</td>
+                <td>@item.Name</td>
+                <td>@item.Age</td>
+                <td>@item.DateOfBirth</td>
+                <td>@item.Address</td>
+                <td>@item.Education</td>
+                <td>@Html.ActionLink("Delete", "DeleteTrainee", "Staffs", new { id = @item.TraineeId }, new { @class = "btn btn-danger" })</td>
+                <td>@Html.ActionLink("Edit", "EditTrainee", "Staffs", new { id = @item.Id }, new { @class = "btn btn-primary" })</td>
+            </tr>
+        }
+            </tr>
+        </tbody>
+    </table>
