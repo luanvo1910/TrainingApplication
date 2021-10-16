@@ -199,6 +199,12 @@ namespace TrainingApplication.Controllers
                 CourseId = viewModel.CourseId,
                 TraineeId = viewModel.TraineeId
             };
+            List<TraineesCourse> traineesCourses = _context.TraineesCourses.ToList();
+            bool alreadyExist = traineesCourses.Any(item => item.CourseId == model.CourseId && item.TraineeId == model.TraineeId);
+            if (alreadyExist == true)
+            {
+                return RedirectToAction("GetTrainees", "Courses");
+            }
             _context.TraineesCourses.Add(model);
             _context.SaveChanges();
 
@@ -256,10 +262,17 @@ namespace TrainingApplication.Controllers
                 CourseId = viewModel.CourseId,
                 TrainerId = viewModel.TrainerId
             };
+
+            List<TrainersCourse> trainersCourses = _context.TrainersCourses.ToList();
+            bool alreadyExist = trainersCourses.Any(item => item.CourseId == model.CourseId && item.TrainerId == model.TrainerId);
+            if (alreadyExist == true)
+            {
+                return RedirectToAction("GetTrainers", "Courses");
+            }
             _context.TrainersCourses.Add(model);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Courses");
+            return RedirectToAction("GetTrainers", "Courses");
         }
 
         [HttpGet]
@@ -292,7 +305,7 @@ namespace TrainingApplication.Controllers
             _context.TrainersCourses.Remove(userTeam);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Courses");
+            return RedirectToAction("GetTrainers", "Courses");
         }
 
     }

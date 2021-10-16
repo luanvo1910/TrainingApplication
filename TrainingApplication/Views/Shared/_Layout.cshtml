@@ -27,7 +27,6 @@
                     {
                         if (User.IsInRole(Role.Admin))
                         {
-                            <li>@Html.ActionLink("Manage Specialties", "Index", "Specialtys")</li>
                             <li>@Html.ActionLink("List of Staffs", "GetStaffs", "Admin")</li>
                             <li>@Html.ActionLink("List of Strainers", "GetTrainers", "Admin")</li>
                         }
@@ -43,6 +42,11 @@
                         {
                             <li>@Html.ActionLink("Profile", "Index", "Trainers")</li>
                             <li>@Html.ActionLink("Courses", "Course", "Trainers")</li>
+                        }
+                        else if (User.IsInRole(Role.Trainee))
+                        {
+                            <li>@Html.ActionLink("Profile", "Index", "Trainee")</li>
+                            <li>@Html.ActionLink("Courses", "Course", "Trainee")</li>
                         }
                     }
                 </ul>

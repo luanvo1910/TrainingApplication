@@ -69,12 +69,18 @@ namespace TrainingApplication.Controllers
                 .Select(t => t.CourseId)
                 .ToList();
 
-            List<TraineesCourse> traineeCourses = new List<TraineesCourse>();
+            List<CoursesTraineesViewModel> traineeCourses = new List<CoursesTraineesViewModel>();
 
             foreach (var courseId in trainerCourses)
             {
                 var trainees = _context.TraineesCourses
                 .Where(t => t.CourseId == courseId)
+                .GroupBy(i => i.Course)
+                .Select(res => new CoursesTraineesViewModel
+                {
+                    Course = res.Key,
+                    Trainees = res.Select(u => u.Trainee).ToList()
+                })
                 .ToList();
                 traineeCourses.AddRange(trainees);
             }
