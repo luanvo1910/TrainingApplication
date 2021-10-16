@@ -7,7 +7,7 @@
 
 @using (@Html.BeginForm("AddTrainer", "Courses", FormMethod.Post))
 {
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary("", new { @class = "text-danger" })
 
     <div class="form-group">
         <label>Course</label>

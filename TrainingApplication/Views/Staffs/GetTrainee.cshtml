@@ -12,11 +12,11 @@
 @using (Html.BeginForm("GetTrainee", "Staffs", FormMethod.Get))
 {
     <div class="form-group">
-        @Html.TextBox("SearchName", null, new {@class = "form-control"})
+        @Html.TextBox("SearchName", null, new { @class = "form-control" })
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
 }
-
+@Html.ValidationSummary("", new { @class = "text-danger" })
 <table class="table">
     <thead class="thead-dark">
         <tr>

@@ -131,7 +131,8 @@ namespace TrainingApplication.Controllers
                 .SingleOrDefault(t => t.CourseId == id);
             if (CourseInDb == null)
             {
-                return HttpNotFound();
+                ModelState.AddModelError("", "Course is not Exist");
+                return RedirectToAction("Index", "Courses");
             }
             _context.TrainersCourses.Remove(CoursesTrainerInDb);
             _context.TraineesCourses.Remove(CoursesTraineeInDb);
@@ -203,6 +204,7 @@ namespace TrainingApplication.Controllers
             bool alreadyExist = traineesCourses.Any(item => item.CourseId == model.CourseId && item.TraineeId == model.TraineeId);
             if (alreadyExist == true)
             {
+                ModelState.AddModelError("", "Trainee is already assignned this Course");
                 return RedirectToAction("GetTrainees", "Courses");
             }
             _context.TraineesCourses.Add(model);
@@ -235,7 +237,8 @@ namespace TrainingApplication.Controllers
                 .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TraineeId == viewModel.TraineeId);
             if (userTeam == null)
             {
-                return HttpNotFound();
+                ModelState.AddModelError("", "Trainee is not assignned in this Course");
+                return RedirectToAction("GetTrainees", "Courses");
             }
 
             _context.TraineesCourses.Remove(userTeam);
@@ -267,6 +270,7 @@ namespace TrainingApplication.Controllers
             bool alreadyExist = trainersCourses.Any(item => item.CourseId == model.CourseId && item.TrainerId == model.TrainerId);
             if (alreadyExist == true)
             {
+                ModelState.AddModelError("", "Trainer is already assignned this Course");
                 return RedirectToAction("GetTrainers", "Courses");
             }
             _context.TrainersCourses.Add(model);
@@ -299,7 +303,8 @@ namespace TrainingApplication.Controllers
                 .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TrainerId == viewModel.TrainerId);
             if (userTeam == null)
             {
-                return HttpNotFound();
+                ModelState.AddModelError("", "Trainer is not assignned in this Course");
+                return RedirectToAction("GetTrainers", "Courses");
             }
 
             _context.TrainersCourses.Remove(userTeam);

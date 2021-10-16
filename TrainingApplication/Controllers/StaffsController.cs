@@ -121,7 +121,8 @@ namespace TrainingApplication.Controllers
                 .SingleOrDefault(t => t.TraineeId == id);
             if (traineeInDb == null || traineeInfoInDb == null)
             {
-                return HttpNotFound();
+                ModelState.AddModelError("", "Trainee is not in thí course");
+                return RedirectToAction("GetTrainee", "Staffs");
             }
             _context.Users.Remove(traineeInDb);
             _context.Trainees.Remove(traineeInfoInDb);
@@ -147,7 +148,8 @@ namespace TrainingApplication.Controllers
             var traineeInDb = _context.Trainees.SingleOrDefault(t => t.Id == trainee.Id);
             if (traineeInDb == null)
             {
-                return HttpNotFound();
+                ModelState.AddModelError("", "Trainee is not Exist");
+                return RedirectToAction("GetTrainee", "Staffs");
             }
             traineeInDb.Name = trainee.Name;
             traineeInDb.Age = trainee.Age;
