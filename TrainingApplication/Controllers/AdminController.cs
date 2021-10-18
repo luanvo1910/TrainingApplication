@@ -226,7 +226,17 @@ namespace TrainingApplication.Controllers
             var userInDb = _context.Users.SingleOrDefault(i => i.Id == id);
             var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             userId = userInDb.Id;
-            var result = await UserManager.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
+
+            if (userId != null)
+            {
+                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+                userManager.RemovePassword(userId);
+                string newPassword = "Abc_123";
+                userManager.AddPassword(userId, newPassword);
+            }
+            _context.SaveChanges();
+
+            var result = await UserManager.ChangePasswordAsync(userId, "Abc_123", model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(userId);
@@ -308,7 +318,17 @@ namespace TrainingApplication.Controllers
             var userInDb = _context.Users.SingleOrDefault(i => i.Id == id);
             var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
             userId = userInDb.Id;
-            var result = await UserManager.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
+
+            if (userId != null)
+            {
+                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+                userManager.RemovePassword(userId);
+                string newPassword = "Abc_123";
+                userManager.AddPassword(userId, newPassword);
+            }
+            _context.SaveChanges();
+
+            var result = await UserManager.ChangePasswordAsync(userId, "Abc_123", model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(userId);
