@@ -169,7 +169,7 @@ namespace TrainingApplication.Controllers
                 .SingleOrDefault(t => t.Id == id);
             var staffInfoInDb = _context.Staffs
                 .SingleOrDefault(t => t.StaffId == id);
-            if (staffInfoInDb == null || staffInfoInDb == null)
+            if (staffInDb == null || staffInfoInDb == null)
             {
                 return HttpNotFound();
             }
