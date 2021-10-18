@@ -28,32 +28,25 @@ namespace TrainingApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult Course()
+        public ActionResult Courses()
         {
             var userId = User.Identity.GetUserId();
 
-            var courseIds = _context.TraineesCourses
+            var courses = _context.TraineesCourses
                 .Where(t => t.Trainee.TraineeId == userId)
-                .Select(t => t.CourseId)
+                .Select(t => t.Course)
                 .ToList();
+            return View(courses);
+        }
 
-            List<CoursesTraineesViewModel> traineeCourses = new List<CoursesTraineesViewModel>();
-
-            foreach (var courseId in courseIds)
-            {
-                var trainees = _context.TraineesCourses
-                .Where(t => t.CourseId == courseId)
-                .GroupBy(i => i.Course)
-                .Select(res => new CoursesTraineesViewModel
-                {
-                    Course = res.Key,
-                    Trainees = res.Select(u => u.Trainee).ToList()
-                })
+        [HttpGet]
+        public ActionResult CourseTrainees(int id)
+        {
+            var traineesCourse = _context.TraineesCourses
+                .Where(t => t.CourseId == id)
+                .Select(t => t.Trainee)
                 .ToList();
-                traineeCourses.AddRange(trainees);
-            }
-
-            return View(traineeCourses);
+            return View(traineesCourse);
         }
     }
 }

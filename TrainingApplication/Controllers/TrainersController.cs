@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 using TrainingApplication.Models;
 using TrainingApplication.Utils;
 using TrainingApplication.ViewModels;
@@ -58,34 +59,28 @@ namespace TrainingApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult Course()
+        public ActionResult Courses()
         {
-            var course = _context.Courses.ToList();
-            var trainee = _context.Trainees.ToList();
-            var userId = User.Identity.GetUserId();
-
-            var trainerCourses = _context.TrainersCourses
-                .Where(t => t.Trainer.TrainerId == userId)
-                .Select(t => t.CourseId)
+            var trainerId = User.Identity.GetUserId();
+            var trainer = _context.Trainers.ToList();
+            var course = _context.Courses
+                .Include(t => t.Category)
                 .ToList();
-
-            List<CoursesTraineesViewModel> traineeCourses = new List<CoursesTraineesViewModel>();
-
-            foreach (var courseId in trainerCourses)
-            {
-                var trainees = _context.TraineesCourses
-                .Where(t => t.CourseId == courseId)
-                .GroupBy(i => i.Course)
-                .Select(res => new CoursesTraineesViewModel
-                {
-                    Course = res.Key,
-                    Trainees = res.Select(u => u.Trainee).ToList()
-                })
+            var courses = _context.TrainersCourses
+                .Where(t => t.Trainer.TrainerId == trainerId)
+                .Select(t => t.Course)
                 .ToList();
-                traineeCourses.AddRange(trainees);
-            }
+            return View(courses);
+        }
 
-            return View(traineeCourses);
+        [HttpGet]
+        public ActionResult CourseTrainees(int id)
+        {
+            var traineesCourse = _context.TraineesCourses
+                .Where(t => t.CourseId == id)
+                .Select(t => t.Trainee)
+                .ToList();
+            return View(traineesCourse);
         }
     }
 }

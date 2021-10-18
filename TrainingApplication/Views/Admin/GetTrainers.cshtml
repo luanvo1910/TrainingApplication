@@ -33,7 +33,7 @@
             <td>@item.Specialty</td>
             <td>@Html.ActionLink("Delete", "DeleteTrainer", "Admin", new { id = @item.Id }, new { @class = "btn btn-danger" })</td>
             <td>@Html.ActionLink("Edit", "EditTrainer", "Admin", new { id = @item.Id }, new { @class = "btn btn-primary" })</td>
-            <td>@Html.ActionLink("Reset Password", "TrainerPasswordReset", "Admin", new { id = @item.TrainerId }, new { @class = "btn btn-primary" })</td>
+            <td>@Html.ActionLink("Change Password", "TrainerChangePassword", "Admin", new { id = @item.TrainerId}, new { @class = "btn btn-primary" })</td>
         </tr>
         }
             </tr>

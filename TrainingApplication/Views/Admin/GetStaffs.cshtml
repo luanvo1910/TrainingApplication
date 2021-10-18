@@ -31,7 +31,7 @@
             <td>@item.Address</td>
             <td>@Html.ActionLink("Delete", "DeleteStaff", "Admin", new { id = @item.Id }, new { @class = "btn btn-danger" })</td>
             <td>@Html.ActionLink("Edit", "EditStaff", "Admin", new { id = @item.Id }, new { @class = "btn btn-primary" })</td>
-            <td>@Html.ActionLink("Reset Password", "StaffPasswordReset", "Admin", new { id = @item.StaffId }, new { @class = "btn btn-primary" })</td>
+            <td>@Html.ActionLink("Change Password", "StaffChangePassword", "Admin", new { id = @item.StaffId }, new { @class = "btn btn-primary" })</td>
         </tr>
         }
             </tr>

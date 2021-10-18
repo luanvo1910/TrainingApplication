@@ -234,9 +234,9 @@ namespace TrainingApplication.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string id)
         {
-            return code == null ? View("Error") : View();
+            return id == null ? View("Error") : View();
         }
 
         //

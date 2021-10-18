@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Trainning Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -41,12 +41,12 @@
                         else if (User.IsInRole(Role.Trainer))
                         {
                             <li>@Html.ActionLink("Profile", "Index", "Trainers")</li>
-                            <li>@Html.ActionLink("Courses", "Course", "Trainers")</li>
+                            <li>@Html.ActionLink("Courses", "Courses", "Trainers")</li>
                         }
                         else if (User.IsInRole(Role.Trainee))
                         {
                             <li>@Html.ActionLink("Profile", "Index", "Trainee")</li>
-                            <li>@Html.ActionLink("Courses", "Course", "Trainee")</li>
+                            <li>@Html.ActionLink("Courses", "Courses", "Trainee")</li>
                         }
                     }
                 </ul>

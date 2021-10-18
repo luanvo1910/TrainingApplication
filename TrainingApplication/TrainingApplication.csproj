@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\CreateStaffViewModel.cs" />
     <Compile Include="ViewModels\CreateTraineeViewModel.cs" />
     <Compile Include="ViewModels\CreateTrainerViewModel.cs" />
+    <Compile Include="ViewModels\PasswordViewModel.cs" />
     <Compile Include="ViewModels\TraineesCourseViewModel.cs" />
     <Compile Include="ViewModels\TrainersCourseViewModel.cs" />
   </ItemGroup>
@@ -286,9 +287,13 @@
     <Content Include="Views\Courses\GetTrainers.cshtml" />
     <Content Include="Views\Trainers\Index.cshtml" />
     <Content Include="Views\Trainers\Edit.cshtml" />
-    <Content Include="Views\Trainers\Course.cshtml" />
-    <Content Include="Views\Trainee\Course.cshtml" />
+    <Content Include="Views\Trainers\Courses.cshtml" />
+    <Content Include="Views\Trainee\Courses.cshtml" />
     <Content Include="Views\Trainee\Index.cshtml" />
+    <Content Include="Views\Admin\TrainerChangePassword.cshtml" />
+    <Content Include="Views\Admin\StaffChangePassword.cshtml" />
+    <Content Include="Views\Trainers\CourseTrainees.cshtml" />
+    <Content Include="Views\Trainee\CourseTrainees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
