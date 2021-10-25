@@ -18,11 +18,11 @@
     </div>
 
     <div class="form-group">
-        <label>Trainee</label>
+        <label>Trainer</label>
         @Html.DropDownListFor(m => m.TrainerId,
        new SelectList(Model.Trainers, "Id", "Email"),
        new { @class = "form-control" }
        )
     </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-danger">Remove</button>
 }

@@ -10,7 +10,7 @@
     @Html.ActionLink("Remove Trainee", "RemoveTrainee", "Courses", new { @class = "btn btn-danger" })
 </div>
 
-@using (Html.BeginForm("Index", "Courses", FormMethod.Get))
+@using (Html.BeginForm("GetTrainees", "Courses", FormMethod.Get))
 {
     <div class="form-group">
         @Html.TextBox("SearchCourse", null, new { @class = "form-control" })

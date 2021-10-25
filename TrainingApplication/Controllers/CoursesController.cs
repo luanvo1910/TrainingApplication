@@ -37,56 +37,6 @@ namespace TrainingApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetTrainers(string SearchCourse)
-        {
-            var courses = _context.Courses
-                .Include(t => t.Category)
-                .ToList();
-            var trainer = _context.TrainersCourses.ToList();
-
-            List<CoursesTrainerViewModel> viewModel = _context.TrainersCourses
-                .GroupBy(i => i.Course)
-                .Select(res => new CoursesTrainerViewModel
-                {
-                    Course = res.Key,
-                    Trainers = res.Select(u => u.Trainer).ToList()
-                })
-                .ToList();
-            if (!string.IsNullOrEmpty(SearchCourse))
-            {
-                viewModel = viewModel
-                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
-                    ToList();
-            }
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public ActionResult GetTrainees(string SearchCourse)
-        {
-            var courses = _context.Courses
-                .Include(t => t.Category)
-                .ToList();
-            var trainee = _context.TraineesCourses.ToList();
-
-            List<CoursesTraineesViewModel> viewModel = _context.TraineesCourses
-                .GroupBy(i => i.Course)
-                .Select(res => new CoursesTraineesViewModel
-                {
-                    Course = res.Key,
-                    Trainees = res.Select(u => u.Trainee).ToList()
-                })
-                .ToList();
-            if (!string.IsNullOrEmpty(SearchCourse))
-            {
-                viewModel = viewModel
-                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
-                    ToList();
-            }
-            return View(viewModel);
-        }
-
-        [HttpGet]
         public ActionResult Create()
         {
             var categories = _context.Categories.ToList();
@@ -183,6 +133,31 @@ namespace TrainingApplication.Controllers
         }
 
         [HttpGet]
+        public ActionResult GetTrainees(string SearchCourse)
+        {
+            var courses = _context.Courses
+                .Include(t => t.Category)
+                .ToList();
+            var trainee = _context.TraineesCourses.ToList();
+
+            List<CoursesTraineesViewModel> viewModel = _context.TraineesCourses
+                .GroupBy(i => i.Course)
+                .Select(res => new CoursesTraineesViewModel
+                {
+                    Course = res.Key,
+                    Trainees = res.Select(u => u.Trainee).ToList()
+                })
+                .ToList();
+            if (!string.IsNullOrEmpty(SearchCourse))
+            {
+                viewModel = viewModel
+                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
+                    ToList();
+            }
+            return View(viewModel);
+        }
+
+        [HttpGet]
         public ActionResult AddTrainee()
         {
             var viewModel = new TraineesCourseViewModel
@@ -233,18 +208,43 @@ namespace TrainingApplication.Controllers
         [HttpPost]
         public ActionResult RemoveTrainee(TraineesCourseViewModel viewModel)
         {
-            var userTeam = _context.TraineesCourses
+            var courseTrainee = _context.TraineesCourses
                 .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TraineeId == viewModel.TraineeId);
-            if (userTeam == null)
+            if (courseTrainee == null)
             {
                 ModelState.AddModelError("", "Trainee is not assignned in this Course");
                 return RedirectToAction("GetTrainees", "Courses");
             }
 
-            _context.TraineesCourses.Remove(userTeam);
+            _context.TraineesCourses.Remove(courseTrainee);
             _context.SaveChanges();
 
             return RedirectToAction("GetTrainees", "Courses");
+        }
+
+        [HttpGet]
+        public ActionResult GetTrainers(string SearchCourse)
+        {
+            var courses = _context.Courses
+                .Include(t => t.Category)
+                .ToList();
+            var trainer = _context.TrainersCourses.ToList();
+
+            List<CoursesTrainerViewModel> viewModel = _context.TrainersCourses
+                .GroupBy(i => i.Course)
+                .Select(res => new CoursesTrainerViewModel
+                {
+                    Course = res.Key,
+                    Trainers = res.Select(u => u.Trainer).ToList()
+                })
+                .ToList();
+            if (!string.IsNullOrEmpty(SearchCourse))
+            {
+                viewModel = viewModel
+                    .Where(t => t.Course.Name.ToLower().Contains(SearchCourse.ToLower())).
+                    ToList();
+            }
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -299,15 +299,15 @@ namespace TrainingApplication.Controllers
         [HttpPost]
         public ActionResult RemoveTrainer(TrainersCourseViewModel viewModel)
         {
-            var userTeam = _context.TrainersCourses
+            var courseTrainer = _context.TrainersCourses
                 .SingleOrDefault(t => t.CourseId == viewModel.CourseId && t.TrainerId == viewModel.TrainerId);
-            if (userTeam == null)
+            if (courseTrainer == null)
             {
                 ModelState.AddModelError("", "Trainer is not assignned in this Course");
                 return RedirectToAction("GetTrainers", "Courses");
             }
 
-            _context.TrainersCourses.Remove(userTeam);
+            _context.TrainersCourses.Remove(courseTrainer);
             _context.SaveChanges();
 
             return RedirectToAction("GetTrainers", "Courses");

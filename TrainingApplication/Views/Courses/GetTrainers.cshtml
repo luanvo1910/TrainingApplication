@@ -12,7 +12,7 @@
 
 <div></div>
 
-@using (Html.BeginForm("Index", "Courses", FormMethod.Get))
+@using (Html.BeginForm("GetTrainers", "Courses", FormMethod.Get))
 {
     <div class="form-group">
         @Html.TextBox("SearchCourse", null, new { @class = "form-control" })

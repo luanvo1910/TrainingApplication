@@ -86,19 +86,10 @@ namespace TrainingApplication.Controllers
                     await UserManager.AddToRoleAsync(user.Id, Role.Staff);
                     _context.Staffs.Add(newStaff);
                     _context.SaveChanges();
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("GetStaffs", "Admin");
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
             return View(viewModel);
         }
 
@@ -139,19 +130,10 @@ namespace TrainingApplication.Controllers
                     await UserManager.AddToRoleAsync(user.Id, Role.Trainer);
                     _context.Trainers.Add(newTrainer);
                     _context.SaveChanges();
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("GetTrainers", "Admin");
                 }
                 AddErrors(result);
             }
-
-            // If we got this far, something failed, redisplay form
             return View(viewModel);
         }
 
@@ -212,8 +194,6 @@ namespace TrainingApplication.Controllers
             return View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> StaffChangePassword(PasswordViewModel model, string id)
@@ -295,8 +275,6 @@ namespace TrainingApplication.Controllers
             return View();
         }
 
-        //
-        // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> TrainerChangePassword(PasswordViewModel model, string id)

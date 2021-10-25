@@ -12,7 +12,7 @@ namespace TrainingApplication.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("TrainingApplication", throwIfV1Schema: false)
         {
         }
         public DbSet<Category> Categories { get; set; }
