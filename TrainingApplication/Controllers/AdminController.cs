@@ -198,23 +198,19 @@ namespace TrainingApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> StaffChangePassword(PasswordViewModel model, string id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             var userInDb = _context.Users.SingleOrDefault(i => i.Id == id);
-            if (userInDb == null)
+            var result = await UserManager.ChangePasswordAsync(id, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                return HttpNotFound();
+                var user = await UserManager.FindByIdAsync(id);
+                return RedirectToAction("GetStaffs", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            userId = userInDb.Id;
-
-            if (userId != null)
-            {
-                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
-                userManager.RemovePassword(userId);
-                string newPassword = model.NewPassword;
-                userManager.AddPassword(userId, newPassword);
-            }
-            _context.SaveChanges();
-            return RedirectToAction("GetStaffs", "Admin", new { Message = ManageMessageId.ChangePasswordSuccess });
+            AddErrors(result);
+            return View(model);
         }
 
         [HttpGet]
@@ -279,23 +275,19 @@ namespace TrainingApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> TrainerChangePassword(PasswordViewModel model, string id)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             var userInDb = _context.Users.SingleOrDefault(i => i.Id == id);
-            if (userInDb == null)
+            var result = await UserManager.ChangePasswordAsync(id, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
             {
-                return HttpNotFound();
+                var user = await UserManager.FindByIdAsync(id);
+                return RedirectToAction("GetTrainers", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
-            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            userId = userInDb.Id;
-
-            if (userId != null)
-            {
-                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
-                userManager.RemovePassword(userId);
-                string newPassword = model.NewPassword;
-                userManager.AddPassword(userId, newPassword);
-            }
-            _context.SaveChanges();
-            return RedirectToAction("GetTrainers", "Admin", new {Message = ManageMessageId.ChangePasswordSuccess });
+            AddErrors(result);
+            return View(model);
         }
     }
 }
