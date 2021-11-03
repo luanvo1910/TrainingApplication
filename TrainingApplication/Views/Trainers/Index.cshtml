@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>My Profile</h2>
+<h2>@Model.Name Profile</h2>
 
 @Html.ActionLink("Edit", "Edit", "Trainers", new { id = @Model.Id }, new { @class = "btn btn-success" })
 

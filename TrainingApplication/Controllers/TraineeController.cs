@@ -31,7 +31,7 @@ namespace TrainingApplication.Controllers
         public ActionResult Courses()
         {
             var userId = User.Identity.GetUserId();
-
+            var category = _context.Categories.ToList();
             var courses = _context.TraineesCourses
                 .Where(t => t.Trainee.TraineeId == userId)
                 .Select(t => t.Course)

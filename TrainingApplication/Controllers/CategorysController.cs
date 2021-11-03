@@ -18,16 +18,9 @@ namespace TrainingApplication.Controllers
         }
         // GET: Category
         [HttpGet]
-        public ActionResult Index(string SearchCategorys)
+        public ActionResult Index()
         {
-
             var categorys = _context.Categories.ToList();
-            if (!string.IsNullOrEmpty(SearchCategorys))
-            {
-                categorys = categorys
-                    .Where(t => t.Name.ToLower().Contains(SearchCategorys.ToLower())).
-                    ToList();
-            }
             return View(categorys);
         }
 
