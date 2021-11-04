@@ -140,7 +140,7 @@ namespace TrainingApplication.Controllers
         [HttpGet]
         public ActionResult GetStaffs(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =  message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed.":"";
+            ViewBag.StatusMessage =  message == ManageMessageId.ChangePasswordSuccess ? "Password has been changed.":"";
             var staffs = _context.Staffs.ToList();
             return View(staffs);
         }
@@ -217,7 +217,7 @@ namespace TrainingApplication.Controllers
         [HttpGet]
         public ActionResult GetTrainers(ManageMessageId? message)
         {
-            ViewBag.StatusMessage = message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed." : "";
+            ViewBag.StatusMessage = message == ManageMessageId.ChangePasswordSuccess ? "Password has been changed." : "";
             var trainers = _context.Trainers.ToList();
             return View(trainers);
         }

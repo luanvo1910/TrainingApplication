@@ -75,17 +75,11 @@ namespace TrainingApplication.Controllers
         {
             var CourseInDb = _context.Courses
                 .SingleOrDefault(t => t.Id == id);
-            var CoursesTraineeInDb = _context.TraineesCourses
-                .SingleOrDefault(t => t.CourseId == id);
-            var CoursesTrainerInDb = _context.TrainersCourses
-                .SingleOrDefault(t => t.CourseId == id);
             if (CourseInDb == null)
             {
                 ModelState.AddModelError("", "Course is not Exist");
                 return RedirectToAction("Index", "Courses");
             }
-            _context.TrainersCourses.Remove(CoursesTrainerInDb);
-            _context.TraineesCourses.Remove(CoursesTraineeInDb);
             _context.Courses.Remove(CourseInDb);
             _context.SaveChanges();
             return RedirectToAction("Index", "Courses");
