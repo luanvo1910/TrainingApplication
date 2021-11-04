@@ -38,7 +38,7 @@
                 <td>@item.Email</td>
                 <td>@item.Name</td>
                 <td>@item.Age</td>
-                <td>@item.DateOfBirth</td>
+                <td>@item.DateOfBirth.ToString("d")</td>
                 <td>@item.Address</td>
                 <td>@item.Education</td>
                 <td>@Html.ActionLink("Delete", "DeleteTrainee", "Staffs", new { id = @item.TraineeId }, new { @class = "btn btn-danger" })</td>
